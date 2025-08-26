@@ -6,3 +6,4 @@ use Illuminate\Http\Request;
 
 Route::apiResource('/practices', PracticeController::class);
 Route::get('/practice/recent', [PracticeController::class, 'recentlyAccessed']);
+Route::get('/practice/filter', [PracticeController::class, 'filter']);

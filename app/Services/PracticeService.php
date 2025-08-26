@@ -95,9 +95,9 @@ class PracticeService
 
     public function updatePractice($request, $id)
     {
-        $data = Practice::findOrFail($id);
+        $practice = Practice::findOrFail($id);
         try {
-            $data->update([
+            $practice->update([
                 'name' => $request->name,
                 'org_type_id' => $request->org_type_id,
                 'taxonomy_spec_id' => $request->taxonomy_spec_id,
@@ -130,8 +130,18 @@ class PracticeService
                 'npi_code' => $request->npi_code,
                 'payaddress_same_pa' => $request->payaddress_same_pa
             ]);
-            $this->locations($request, $data);
-            return $data;
+            $location = PracticeLocation::where('practice_id',$practice->id)->first();
+            $location->update([
+                'name' => $practice->name,
+                'address1' => $practice->address1,
+                'address2' => $practice->address2,
+                'city' => $practice->city,
+                'state' => $practice->state,
+                'zip' => $practice->zip,
+                'npi_code' => $practice->npi_code,
+            ]);
+            $this->locations($request, $practice);
+            return $practice;
         } catch (\Throwable $th) {
             return $th;
         }

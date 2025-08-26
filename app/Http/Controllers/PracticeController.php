@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\PracticeRequest;
 use App\Http\Resources\PracticeResource;
 use App\Models\Practice;
+use App\Models\PracticeLocation;
 use App\Trait\PracticeTrait as AppPracticeTrait;
 use App\Trait\PracticeTrait;
 use App\Services\PracticeService;
@@ -28,7 +29,7 @@ class PracticeController extends Controller
     public function store(PracticeRequest $request)
     {
         try {
-            $query= $this->practiceService->createPractice($request);
+            $query = $this->practiceService->createPractice($request);
             return $query;
         } catch (\Throwable $th) {
             return $th;
@@ -39,8 +40,8 @@ class PracticeController extends Controller
     public function update(PracticeRequest $request, $id)
     {
         try {
-            $data = $this->practiceService->updatePractice($request, $id);
-            return $this->success('Practice updated successfully', $data);
+            $query = $this->practiceService->updatePractice($request, $id);
+            return $this->success('Practice updated successfully', $query);
         } catch (\Throwable $th) {
             return $this->error('Failed to update practice', 500);
         }
@@ -54,8 +55,26 @@ class PracticeController extends Controller
     }
     public function recentlyAccessed()
     {
-     $practice = $this->practiceService->accessed();
-     return $practice;
+        $practice = $this->practiceService->accessed();
+        return $practice;
+    }
+    public function filter(Request $request)
+    {
+        // $name = $request->name;
+        // $npi_code =$request->npi_code;
+        $zip = $request->zip;
+
+
+        $data = PracticeLocation::query()
+
+            // ->when($name, fn($q) => $q->where('name', $name))
+            // ->when($npi_code, fn($q) => $q->where('npi_code', $npi_code))
+            ->when($zip, function ($q, $zip) {
+                $q->whereHas('practice', function ($q) use ($zip) {
+                    $q->where('zip', $zip);
+                });
+            })->get();
+        return $data;
     }
 
     public function show($id)
