@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests\PracticeRequest;
 use App\Http\Resources\PracticeResource;
 use App\Models\Practice;
-use App\Models\PracticeLocation;
 use App\Trait\PracticeTrait as AppPracticeTrait;
 use App\Trait\PracticeTrait;
 use App\Services\PracticeService;
@@ -65,15 +64,20 @@ class PracticeController extends Controller
         $zip = $request->zip;
 
 
-        $data = PracticeLocation::query()
+        $data = Practice::query()
 
             // ->when($name, fn($q) => $q->where('name', $name))
             // ->when($npi_code, fn($q) => $q->where('npi_code', $npi_code))
-            ->when($zip, function ($q, $zip) {
-                $q->whereHas('practice', function ($q) use ($zip) {
-                    $q->where('zip', $zip);
+            ->when($zip, function($q, $zip) {
+                $q->whenHas('locations', function($q) use ($zip) {
+                    $q->where('name', $zip);
                 });
             })->get();
+            // ->when($zip, function ($q, $zip) {
+            //     $q->whereHas('locations', function ($q) use ($zip) {
+            //         $q->where('zip', $zip);
+            //     });
+            // })->get();
         return $data;
     }
 
