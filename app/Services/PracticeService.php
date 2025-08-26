@@ -157,4 +157,21 @@ class PracticeService
             return $th;
         }
     }
+    public function filter($request){
+
+        $name = $request->name;
+        $npi_code =$request->npi_code;
+        $zip = $request->zip;
+        $filter = Practice::query()
+        // ->when($name, fn($q) => $q->where('name', $name))->get();
+       // ->when($npi_code, fn($q) => $q->where('npi_code', $npi_code))
+        ->when($name, function($q, $zip) use($name, $npi_code) {
+            $q->whereHas('locations', function($q) use($zip, $name, $npi_code) {
+                $q->where('zip', $zip)
+                ->orWhere('name', $name)
+                ->orWhere('npi_code', $npi_code);
+            });
+        })->get();
+        return $filter;
+    }
 }
