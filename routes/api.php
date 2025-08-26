@@ -4,4 +4,5 @@ use App\Http\Controllers\PracticeController;
 use Illuminate\Http\Request;
 
 
-Route::apiResource('practices', PracticeController::class);
+Route::apiResource('/practices', PracticeController::class);
+Route::get('/practice/recent', [PracticeController::class, 'recentlyAccessed']);
