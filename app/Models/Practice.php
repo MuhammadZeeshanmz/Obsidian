@@ -40,5 +40,8 @@ class Practice extends Model
         'payaddress_same_pa',
 
     ];
-
+    public function locations()
+    {
+        return $this->hasMany(PracticeLocation::class, 'practice_id');
+    }
 }

@@ -28,9 +28,10 @@ class PracticeController extends Controller
     public function store(PracticeRequest $request)
     {
         try {
-            $data = $this->practiceService->createPractice($request);
-            return $this->success('Practice created successfully', $data);
+            $query= $this->practiceService->createPractice($request);
+            return $query;
         } catch (\Throwable $th) {
+            return $th;
             return $this->error('Failed to store practice', 500);
         }
     }
@@ -60,7 +61,7 @@ class PracticeController extends Controller
     public function show($id)
     {
         try {
-            $practice = Practice::findOrFail($id);
+            $practice = Practice::with('locations')->findOrFail($id);
             $practice->recently_accessed = now();
             $practice->save();
             return $this->success('Success', new PracticeResource($practice));

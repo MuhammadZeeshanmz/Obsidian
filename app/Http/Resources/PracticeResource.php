@@ -45,7 +45,10 @@ class PracticeResource extends JsonResource
                 'deletedAt' => $this->deleted_at,
                 'updatedAt' => $this->updated_at,
                 'npiCode' => $this->npi_code,
-                'payaddressSamePa' => $this->payaddress_same_pa
+                'payaddressSamePa' => $this->payaddress_same_pa,
+                // 'locations' => $this->whenLoaded('locations')
+                'locations' => LocationResource::collection($this->whenLoaded('locations')),
+
 
         ];
     }
