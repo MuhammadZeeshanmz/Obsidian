@@ -59,25 +59,21 @@ class PracticeController extends Controller
     }
     public function filter(Request $request)
     {
-        // $name = $request->name;
+        $name = $request->name;
         // $npi_code =$request->npi_code;
         $zip = $request->zip;
 
 
         $data = Practice::query()
 
-            // ->when($name, fn($q) => $q->where('name', $name))
+            // ->when($name, fn($q) => $q->where('name', $name))->get();
             // ->when($npi_code, fn($q) => $q->where('npi_code', $npi_code))
-            ->when($zip, function($q, $zip) {
-                $q->whenHas('locations', function($q) use ($zip) {
-                    $q->where('name', $zip);
+            ->when($zip, function ($q, $zip) use($name){
+                $q->whereHas('locations', function ($q) use ($zip, $name) {
+                    $q->where('zip', $zip,)
+                    ->orWhere('name', $name);
                 });
             })->get();
-            // ->when($zip, function ($q, $zip) {
-            //     $q->whereHas('locations', function ($q) use ($zip) {
-            //         $q->where('zip', $zip);
-            //     });
-            // })->get();
         return $data;
     }
 

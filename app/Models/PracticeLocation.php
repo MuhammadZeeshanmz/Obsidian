@@ -28,9 +28,4 @@ class PracticeLocation extends Model
 
     ];
 
-    public function practice()
-    {
-        return $this->belongsTo(Practice::class, 'practice_id', 'id');
-    }
-    
 }
