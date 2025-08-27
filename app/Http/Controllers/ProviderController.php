@@ -60,7 +60,7 @@ class ProviderController extends Controller
 
     public function show($id)
     {
-        $provider = Provider::with(['billing.practice'])->findOrFail($id);
+        $provider = Provider::with(['billing.practice', 'note'])->findOrFail($id);
         $provider->recently_accessed = now();
         $provider->save();
         return $provider;

@@ -52,9 +52,15 @@ class Provider extends Model
         'updated_at',
         'note_id',
         'alert_id',
-        
+
     ];
-    public function billing(){
+    public function billing()
+    {
         return $this->hasOne(ProviderBilling::class, 'provide_id');
+    }
+
+    public function note()
+    {
+        return $this->hasOne(Note::class, 'model_id');
     }
 }

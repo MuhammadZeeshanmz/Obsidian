@@ -14,7 +14,5 @@ class Note extends Model
         'note',
         'model_id',
     ];
-    public function provider(){
-        return $this->hasMany(Provider::class, 'model_id');
-    }
+   
 }
