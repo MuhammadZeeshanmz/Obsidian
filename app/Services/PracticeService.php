@@ -168,7 +168,7 @@ class PracticeService
         ->when($zip, function($q, $zip)  use($name){
             $q->whereHas('locations', function($q) use($zip, $name) {
                 $q->where('zip', $zip)
-                ->orWhere('name', $name);
+                ->orWhere('name', 'LIKE', '%$name%');
                 
             });
         })->get();
