@@ -17,10 +17,10 @@ class LocationResource extends JsonResource
         return [
             'id'=> $this->id,
             'practice_id' => $this->practice_id,
-            'practice_location_status' =>  $this->practice_location_status,
-            'user_id' => $this->user_id,
+            'practiceLocationStatus' =>  $this->practice_location_status,
+            'userId' => $this->user_id,
             'name' => $this->name,
-            'npi_code' => $this->npi_code,
+            'npiCode' => $this->npi_code,
             'address1' => $this->address1,
             'address2' => $this->address2,
             'city' => $this->city,
