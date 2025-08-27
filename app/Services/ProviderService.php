@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\Note;
 use App\Models\Practice;
 use App\Models\PracticeLocation;
 use App\Models\Provider;
@@ -54,6 +55,11 @@ class ProviderService
                 'alert_id' => $request->alert_id,
                 
             ]);
+            Note::create([
+                'model_id' => $provider['id'],
+                // 'id' => $provider['id'],
+                'note' => $request->note,
+            ]);
             $this->billing($request, $provider);
             DB::commit();
             return $provider;
@@ -94,6 +100,7 @@ class ProviderService
                 'user_id' => $request->billing['user_id'] ?? null,
             ]
             );
+              
         }
     }
     public function updateProvider($request, $id)
@@ -145,6 +152,7 @@ class ProviderService
             return $th;
         }
     }
+   
 
     public function accessd()
     {
