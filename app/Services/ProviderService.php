@@ -52,6 +52,7 @@ class ProviderService
                 'user_id' => $request->user_id,
                 'note_id' => $request->note_id,
                 'alert_id' => $request->alert_id,
+                
             ]);
             $this->billing($request, $provider);
             DB::commit();
