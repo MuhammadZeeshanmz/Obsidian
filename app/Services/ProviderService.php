@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\Alert;
 use App\Models\Note;
 use App\Models\Practice;
 use App\Models\PracticeLocation;
@@ -59,6 +60,11 @@ class ProviderService
                 'model_id' => $provider['id'],
                 // 'id' => $provider['id'],
                 'note' => $request->note,
+            ]);
+            Alert::create([
+                 'model_id' => $provider['id'],
+                 'title'=> $request->title,
+                 'description'=> $request->description,
             ]);
             $this->billing($request, $provider);
             DB::commit();
