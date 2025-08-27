@@ -32,7 +32,6 @@ class PracticeController extends Controller
             return $query;
         } catch (\Throwable $th) {
             return $th;
-            return $this->error('Failed to store practice', 500);
         }
     }
 
