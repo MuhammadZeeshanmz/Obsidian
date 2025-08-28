@@ -18,7 +18,10 @@ class ProviderController extends Controller
     {
         return $this->providerService = $providerService;
     }
-    public function index() {}
+    public function index() {
+        $provider = Provider::with(['billing.practice'])->get();
+        return $provider;
+    }
 
     public function store(Request $request)
     {
@@ -60,7 +63,7 @@ class ProviderController extends Controller
 
     public function show($id)
     {
-        $provider = Provider::with(['billing.practice', 'note', 'alert'])->findOrFail($id);
+        $provider = Provider::with(['billing.practice', 'notes', 'alert'])->findOrFail($id);
         $provider->recently_accessed = now();
         $provider->save();
         return $provider;

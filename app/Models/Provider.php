@@ -59,11 +59,12 @@ class Provider extends Model
         return $this->hasOne(ProviderBilling::class, 'provide_id');
     }
 
-    public function note()
+    public function notes()
     {
         return $this->hasMany(Note::class, 'model_id');
     }
     public function alert(){
-        return $this->hasOne(Alert::class, 'model_id');
+        return $this->hasMany(Alert::class, 'model_id');
     }
 }
+    

@@ -54,18 +54,28 @@ class ProviderService
                 'user_id' => $request->user_id,
                 'note_id' => $request->note_id,
                 'alert_id' => $request->alert_id,
-                
+
             ]);
-            Note::create([
+            if (!empty($request->notes)) {
+                foreach($request->notes as $note){
+                    $provider->notes()->create([
                 'model_id' => $provider['id'],
-                // 'id' => $provider['id'],
-                'note' => $request->note,
+                    'note' => $note['note'],
             ]);
-            Alert::create([
-                 'model_id' => $provider['id'],
-                 'title'=> $request->title,
-                 'description'=> $request->description,
+            }
+            
+        }
+          if(!empty($request->alerts)){
+            foreach($request->alerts as $alert){
+                Alert::create([
+                'model_id' => $provider['id'],
+                'title' => $request['title'],
+                'description' => $request['description'],
             ]);
+
+          }
+        }
+        
             $this->billing($request, $provider);
             DB::commit();
             return $provider;
@@ -74,39 +84,39 @@ class ProviderService
             return $th;
         }
     }
-    private function billing($request, $provider){
+    private function billing($request, $provider)
+    {
         if (!empty($request->billing)) {
             ProviderBilling::updateOrCreate(
-            [
-                'provide_id' => $provider['id'],
-                'id'=>$provider['id'],
-                
-            ],
-            [
-                'practice_id'=> $request->billing['practice_id'] ?? null,
-                'bill_claim_under' => $request->billing['bill_claim_under'] ?? null,
-                'claim_provider_id' => $request->billing['claim_provider_id'] ?? null,
-                'check_eligibility_under_status' => $request->billing['check_eligibility_under_status'] ?? null,
-                'check_eligibility_under_id' => $request->billing['check_eligibility_under_id'] ?? null,
-                'ssn_type' => $request->billing['ssn_type'] ?? null,
-                'id_num' => $request->billing['id_num'] ?? null,
-                'bill_as' => $request->billing['bill_as'] ?? '',
-                'ein' => $request->billing['ein'] ?? null,
-                'ssn' => $request->billing['ssn'] ?? null,
-                'professional_mode' => $request->billing['professional_mode'] ?? null,
-                'institutional_mode' => $request->billing['institutional_mode'] ?? null,
-                'specialty_license' => $request->billing['specialty_license'] ?? null,
-                'state_license' => $request->billing['state_license'] ?? null,
-                'anesthesia_license' => $request->billing['anesthesia_license'] ?? null,
-                'upin' => $request->billing['upin'] ?? null,
-                'blue_cross' => $request->billing['blue_cross'] ?? null,
-                'champus_num' => $request->billing['champus_num'] ?? null,
-                'revenue_codes_id' => $request->billing['revenue_codes_id'] ?? null,
-                'customer_id' => $request->billing['customer_id'] ?? null,
-                'user_id' => $request->billing['user_id'] ?? null,
-            ]
+                [
+                    'provide_id' => $provider['id'],
+                    'id' => $provider['id'],
+
+                ],
+                [
+                    'practice_id' => $request->billing['practice_id'] ?? null,
+                    'bill_claim_under' => $request->billing['bill_claim_under'] ?? null,
+                    'claim_provider_id' => $request->billing['claim_provider_id'] ?? null,
+                    'check_eligibility_under_status' => $request->billing['check_eligibility_under_status'] ?? null,
+                    'check_eligibility_under_id' => $request->billing['check_eligibility_under_id'] ?? null,
+                    'ssn_type' => $request->billing['ssn_type'] ?? null,
+                    'id_num' => $request->billing['id_num'] ?? null,
+                    'bill_as' => $request->billing['bill_as'] ?? '',
+                    'ein' => $request->billing['ein'] ?? null,
+                    'ssn' => $request->billing['ssn'] ?? null,
+                    'professional_mode' => $request->billing['professional_mode'] ?? null,
+                    'institutional_mode' => $request->billing['institutional_mode'] ?? null,
+                    'specialty_license' => $request->billing['specialty_license'] ?? null,
+                    'state_license' => $request->billing['state_license'] ?? null,
+                    'anesthesia_license' => $request->billing['anesthesia_license'] ?? null,
+                    'upin' => $request->billing['upin'] ?? null,
+                    'blue_cross' => $request->billing['blue_cross'] ?? null,
+                    'champus_num' => $request->billing['champus_num'] ?? null,
+                    'revenue_codes_id' => $request->billing['revenue_codes_id'] ?? null,
+                    'customer_id' => $request->billing['customer_id'] ?? null,
+                    'user_id' => $request->billing['user_id'] ?? null,
+                ]
             );
-              
         }
     }
     public function updateProvider($request, $id)
@@ -158,7 +168,7 @@ class ProviderService
             return $th;
         }
     }
-   
+
 
     public function accessd()
     {
